@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "526885293236",
+    "project_id": "adminecommarce-7cdf3",
+    "storage_bucket": "adminecommarce-7cdf3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:526885293236:android:83aff7ce95fe4149809be1",
+        "android_client_info": {
+          "package_name": "com.admineco"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5_gtZ1R942yabNBUJKKXJ2KFW9cLyYtA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:526885293236:android:13241d7268ae4b35809be1",
+        "android_client_info": {
+          "package_name": "com.ecommarceapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5_gtZ1R942yabNBUJKKXJ2KFW9cLyYtA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
