@@ -12,7 +12,20 @@
           "package_name": "com.admineco"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "526885293236-10a436amrqgu9pvudj3keihhdjl149vk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.admineco",
+            "certificate_hash": "b3f027b5205a3f4a1682b22ef22886f2d5b73c27"
+          }
+        },
+        {
+          "client_id": "526885293236-hf5ek77plgnk36acf9re8iptlorh5nbh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA5_gtZ1R942yabNBUJKKXJ2KFW9cLyYtA"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "526885293236-hf5ek77plgnk36acf9re8iptlorh5nbh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     },
@@ -31,7 +49,20 @@
           "package_name": "com.ecommarceapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "526885293236-e4pge2io957mr006fb77fiu4hpg8ltpt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecommarceapp",
+            "certificate_hash": "b3f027b5205a3f4a1682b22ef22886f2d5b73c27"
+          }
+        },
+        {
+          "client_id": "526885293236-hf5ek77plgnk36acf9re8iptlorh5nbh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA5_gtZ1R942yabNBUJKKXJ2KFW9cLyYtA"
@@ -39,7 +70,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "526885293236-hf5ek77plgnk36acf9re8iptlorh5nbh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

@@ -1,14 +1,20 @@
-
 import { View, Text, StyleSheet, StatusBar, TextInput, Button, Pressable, Image, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import AppButton from '../component/Button/AppButton';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
-import { authEmialPass, singEmialPass } from '../redux/slices/authSlice';
+import { authEmialPass, googleSingin, singEmialPass } from '../redux/slices/authSlice';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
 export default function SignUp({ navigation }) {
+
+  GoogleSignin.configure({
+    webClientId: '526885293236-hf5ek77plgnk36acf9re8iptlorh5nbh.apps.googleusercontent.com',
+  });
+
   const dispatch = useDispatch()
   const SingUpSchema = yup.object({
     username: yup.string().required(),
@@ -37,7 +43,6 @@ export default function SignUp({ navigation }) {
         barStyle="dark-content"
 
       />
-      {/* <MaterialIcons style={style.icon} name="keyboard-arrow-left" color={'black'} size={20} /> */}
       <Text style={style.text}>Sign up</Text>
 
       <TextInput
@@ -94,16 +99,19 @@ export default function SignUp({ navigation }) {
       <View style={style.btnparent}>
         <Pressable
           style={style.btnstyle}
-          onPress={() => ('')}>
-          <Image 
+          onPress={() => dispatch(googleSingin())}>
+          <Image
             source={require("../../assets/images/google.jpg")}
-            style={{ width: 40, height: 40,borderRadius:20 }}
+            style={{ width: 40, height: 40, borderRadius: 20 }}
           />
         </Pressable>
         <Pressable
           style={style.btn}
           onPress={() => ('')}>
-          <MaterialIcons name="facebook" color={'darkblue'} size={45} marginLeft={2} />
+          <Image
+            source={require("../../assets/images/facebook.png")}
+            style={{ width: 40, height: 40, borderRadius: 20 }}
+          />
         </Pressable>
       </View>
     </View>

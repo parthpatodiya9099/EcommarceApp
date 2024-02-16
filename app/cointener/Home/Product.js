@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Image, ScrollView, StyleSheet, Pressable, TouchableOpacity } from 'react-native'
+import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native'
 import Card from '../../component/Card/Card'
 import { horizontalScale, moderateScale, verticalScale } from '../../Constant/Metrics'
 import { useDispatch, useSelector } from 'react-redux'
@@ -18,6 +18,7 @@ export default function Product({ navigation }) {
 
  
   const data = useSelector(state => state.product);
+  console.log(data.data,'llllllllllllllllllllllljjjjjjjjjjjjjjjjjjjjjj77777777777777777777777');
   const category = useSelector(state => state.category);
 
 
