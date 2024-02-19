@@ -6,7 +6,7 @@ import AppButton from '../component/Button/AppButton';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
-import { authEmialPass, googleSingin, singEmialPass } from '../redux/slices/authSlice';
+import { authEmialPass, facebookauth, googleSingin, singEmialPass } from '../redux/slices/authSlice';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 export default function SignUp({ navigation }) {
@@ -97,22 +97,22 @@ export default function SignUp({ navigation }) {
       </View>
 
       <View style={style.btnparent}>
-        <Pressable
+        <TouchableOpacity
           style={style.btnstyle}
           onPress={() => dispatch(googleSingin())}>
           <Image
             source={require("../../assets/images/google.jpg")}
             style={{ width: 40, height: 40, borderRadius: 20 }}
           />
-        </Pressable>
-        <Pressable
+        </TouchableOpacity>
+        <TouchableOpacity
           style={style.btn}
-          onPress={() => ('')}>
+          onPress={() => dispatch(facebookauth())}>
           <Image
             source={require("../../assets/images/facebook.png")}
             style={{ width: 40, height: 40, borderRadius: 20 }}
           />
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </View>
   )

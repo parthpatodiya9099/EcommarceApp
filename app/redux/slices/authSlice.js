@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-
+import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
 const initialState = {
     isLoading: false,
     error: null,
@@ -13,12 +13,12 @@ export const googleSingin = createAsyncThunk(
     async () => {
         await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
         // Get the users ID token
-        const user  = await GoogleSignin.signIn()
-        console.log(user,'userrrrrrrrrrrrrrrrrrrrrrrrrrr');
+        const user = await GoogleSignin.signIn()
+        console.log(user, 'userrrrrrrrrrrrrrrrrrrrrrrrrrr');
 
         // Create a Google credential with the token
         const googleCredential = auth.GoogleAuthProvider.credential(user.idToken);
-        console.log(googleCredential,'tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn');
+        console.log(googleCredential, 'tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn');
         // Sign-in the user with the credential
         return auth().signInWithCredential(googleCredential);
     }
@@ -44,6 +44,38 @@ export const singEmialPass = createAsyncThunk(
 
                 console.error(error);
             });
+    }
+)
+
+export const facebookauth = createAsyncThunk(
+    'auth/facebookauth',
+    async () => {
+        try {
+            const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+
+            if (result.isCancelled) {
+                throw 'User cancelled the login process';
+            }
+
+            // Once signed in, get the users AccessToken
+            const data = await AccessToken.getCurrentAccessToken();
+
+            if (!data) {
+                throw 'Something went wrong obtaining access token';
+            }
+
+            // Create a Firebase credential with the AccessToken
+            const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+
+            const userCredential =  await auth().signInWithCredential(facebookCredential);
+
+            // Sign-in the user with the credential
+            return userCredential.user;;
+        } catch (err){
+            console.log(err);
+            throw err;
+        }
+
     }
 )
 
@@ -92,6 +124,11 @@ const authSlice = createSlice({
         builder.addCase(googleSingin.fulfilled, (state, action) => {
             state.user = action.payload;
         })
+
+        builder.addCase(facebookauth.fulfilled, (state, action) => {
+            state.user = action.payload;
+        })
+
     }
 })
 export default authSlice.reducer;
