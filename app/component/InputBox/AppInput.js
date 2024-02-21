@@ -9,6 +9,7 @@ export default function AppInput({type,placeholder}) {
             style={{width:'90%',height:verticalScale(60),backgroundColor:'white',marginLeft:horizontalScale(20),shadowOpacity: 0.10, shadowRadius: 30, elevation: 4,marginTop:verticalScale(30),borderRadius:5,paddingLeft:horizontalScale(20)}}
             placeholder={placeholder}
             keyboardType={type}
+            
         />
     </View>
   )

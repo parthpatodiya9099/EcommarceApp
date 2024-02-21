@@ -2,11 +2,44 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
+import firestore from '@react-native-firebase/firestore';
+import { useSelector } from "react-redux";
+
 const initialState = {
     isLoading: false,
     error: null,
     user: null
 }
+
+export const addAddressData = createAsyncThunk(
+    'auth/addressAdd',
+    async (data) => {
+        console.log([data.address]);
+        await firestore()
+            .collection('users')
+            .doc(data.id)
+            .update({
+                address: firestore.FieldValue.arrayUnion(data.values)
+            })
+            .then(() => {
+                console.log('user data update successfully');
+            });
+        let userData;
+
+        await firestore()
+            .collection('users')
+            .doc(data.id)
+            .get()
+            .then(documentSnapshot => {
+                if (documentSnapshot.exists) {
+                    userData = documentSnapshot.data();
+                }
+
+            })
+        return data.values
+    }
+
+)
 
 export const googleSingin = createAsyncThunk(
     'auth/googleSingin',
@@ -30,9 +63,18 @@ export const singEmialPass = createAsyncThunk(
         auth()
             .createUserWithEmailAndPassword(data.email, data.Password)
             .then(async (userCredential) => {
+
+                await firestore()
+                    .collection('users')
+                    .doc(userCredential.user.uid)
+                    .set({ name: data.username, email: data.email, emailVerified: false, createAt: new Date().toString(), updateAt: new Date().toString() })
+                    .then(() => {
+                        console.log('ok');
+                    });
                 await userCredential.user.sendEmailVerification()
                 console.log('User account created & signed in!');
             })
+
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {
                     console.log('That email address is already in use!');
@@ -67,11 +109,11 @@ export const facebookauth = createAsyncThunk(
             // Create a Firebase credential with the AccessToken
             const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
 
-            const userCredential =  await auth().signInWithCredential(facebookCredential);
+            const userCredential = await auth().signInWithCredential(facebookCredential);
 
             // Sign-in the user with the credential
             return userCredential.user;;
-        } catch (err){
+        } catch (err) {
             console.log(err);
             throw err;
         }
@@ -84,10 +126,19 @@ export const logingEmail = createAsyncThunk(
     async (data) => {
         const user = await auth()
             .signInWithEmailAndPassword(data.email, data.Password)
-            .then((user) => {
+            .then(async (user) => {
                 console.log('Account is Singin & Login!', user);
                 if (user.user.emailVerified) {
                     console.log('User account login!!');
+
+                    await firestore()
+                        .collection('users')
+                        .doc(user.user.uid)
+                        .update({ emailVerified: true })
+                        .then(() => {
+                            console.log('User updated!');
+                        });
+
                     return user.user
                 } else {
                     console.log('Verify Your Email!',);
@@ -127,6 +178,14 @@ const authSlice = createSlice({
 
         builder.addCase(facebookauth.fulfilled, (state, action) => {
             state.user = action.payload;
+        })
+
+        builder.addCase(addAddressData.fulfilled, (state, action) => {
+            if (state.user) {
+                state.user.address.push(action.payload)
+            } else {
+                state.user = action.payload;
+            }
         })
 
     }

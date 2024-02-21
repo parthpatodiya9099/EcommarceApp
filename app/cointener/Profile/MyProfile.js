@@ -28,6 +28,7 @@ export default function MyProfile({navigation}) {
       <Profileinput
         name="ShippingAddracs"
         titel="3 ddresses"
+        onPress={()=>navigation.navigate('Address')}
       />
 
       <Profileinput
