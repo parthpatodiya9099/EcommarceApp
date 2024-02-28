@@ -1,15 +1,16 @@
-import { View, Text, StyleSheet, TextInput } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native'
 import AppButton from '../../component/Button/AppButton'
 import { horizontalScale, verticalScale } from '../../Constant/Metrics'
 import * as yup from 'yup';
 import { useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
-import { addAddressData } from '../../redux/slices/authSlice';
+import { addAddressData, deleteAddressData, getauthdata } from '../../redux/slices/authSlice';
+import AddressView from '../../component/InputBox/AddressView';
 
 export default function Address({ navigation }) {
   const dispatch = useDispatch();
   const authdata = useSelector(state => state.auth)
+  console.log(authdata.user);
   const AddAddresSchema = yup.object({
     fullname: yup.string().required(),
     address: yup.string().required(),
@@ -29,14 +30,18 @@ export default function Address({ navigation }) {
     },
     validationSchema: AddAddresSchema,
     onSubmit: (values, { resetForm }) => {
-      dispatch(addAddressData({ address:values, id:authdata.user.uid }))
+      dispatch(addAddressData({address:values , uid:authdata.user.uid}))
+      resetForm()
     }
   })
 
   const { handleSubmit, handleBlur, handleChange, touched, errors, values } = formik
-
+  const handleDelete = (data,id) => {
+    console.log({data,id})
+    dispatch(deleteAddressData({data,id}))
+  }
   return (
-    <View>
+    <ScrollView>
       <TextInput
         name='fullname'
         onChangeText={handleChange('fullname')}
@@ -95,8 +100,25 @@ export default function Address({ navigation }) {
           onPress={handleSubmit}
         />
       </View>
-
-    </View>
+      <View>
+        
+          {
+            authdata.user.address && authdata.user.address.map((v, i) => (
+              <View key={i}>
+                <AddressView 
+                  name={v.fullname}
+                  address={v.address}
+                  city={v.city}
+                  contry={v.Country}
+                  zipcode={v.zipcode}
+                  state={v.state}
+                  onPressD={() => handleDelete(v)}
+                />
+              </View>
+            ))
+        }
+      </View>
+    </ScrollView>
   )
 }
 

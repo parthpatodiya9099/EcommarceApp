@@ -4,7 +4,7 @@ import ProductSlice from "./slices/ProductSlice";
 import SubCategorySlice from "./slices/SubCategorySlice";
 import CartSlice, { decrement, increment } from "./slices/CartSlice";
 import FavourateSlice from "./slices/FavourateSlice";
-import authSlice from "./slices/authSlice";
+import authSlice, { addAddressData } from "./slices/authSlice";
 
 
 export const rootReducer = combineReducers({
@@ -15,5 +15,6 @@ export const rootReducer = combineReducers({
     inc:increment,
     dec:decrement,
     favourate:FavourateSlice,
-    auth:authSlice
+    auth:authSlice,
+    address:addAddressData,
 }) 

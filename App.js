@@ -6,6 +6,7 @@ import { persistor, store } from './app/redux/Store';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import SplashScreen from './app/cointener/SplashScreen';
+import AddressView from './app/component/InputBox/AddressView';
 
 export default function App() {
   const [showSplashScreen, setShowSplashScreen] = useState(true);

@@ -3,7 +3,6 @@ import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
 import firestore from '@react-native-firebase/firestore';
-import { useSelector } from "react-redux";
 
 const initialState = {
     isLoading: false,
@@ -14,31 +13,53 @@ const initialState = {
 export const addAddressData = createAsyncThunk(
     'auth/addressAdd',
     async (data) => {
-        console.log([data.address]);
-        await firestore()
-            .collection('users')
-            .doc(data.id)
-            .update({
-                address: firestore.FieldValue.arrayUnion(data.values)
-            })
-            .then(() => {
-                console.log('user data update successfully');
-            });
-        let userData;
+    
+            await firestore()
+                .collection('users')
+                .doc(data.uid)
+                .update({
+                    address: firestore.FieldValue.arrayUnion(data.address)
+                })
+                .then(() => {
+                    console.log('user data update successfully');
+                });
+            let userData;
 
-        await firestore()
-            .collection('users')
-            .doc(data.id)
-            .get()
-            .then(documentSnapshot => {
-                if (documentSnapshot.exists) {
-                    userData = documentSnapshot.data();
-                }
-
-            })
-        return data.values
+            await firestore()
+                .collection('users')
+                .doc(data.uid)
+                .get()
+                .then(documentSnapshot => {
+                    console.log('User exists:', documentSnapshot.exists);
+                    if (documentSnapshot.exists) {
+                        userData = documentSnapshot.data();
+                    }
+                })
+            return { ...userData, id: data.uid }
     }
 
+)
+
+export const deleteAddressData = createAsyncThunk(
+    'auth/addressDelete',
+    async (data) => {
+        console.log(data.id, 'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+        try {
+            await firestore()
+                .collection('users')
+                .doc(data.id)
+                .update({
+                    address: firestore.FieldValue.arrayRemove(data.data)
+                })
+                .then(() => {
+                    console.log('user data update successfully');
+                });
+        } catch (err) {
+            console.log(err);
+            throw (err);
+        }
+
+    }
 )
 
 export const googleSingin = createAsyncThunk(
@@ -174,18 +195,26 @@ const authSlice = createSlice({
 
         builder.addCase(googleSingin.fulfilled, (state, action) => {
             state.user = action.payload;
+            state.isLoading = false;
+            state.error = action.error.message;
         })
 
         builder.addCase(facebookauth.fulfilled, (state, action) => {
             state.user = action.payload;
+            state.isLoading = false;
+            state.error = action.error.message;
         })
 
         builder.addCase(addAddressData.fulfilled, (state, action) => {
-            if (state.user) {
-                state.user.address.push(action.payload)
-            } else {
-                state.user = action.payload;
-            }
+            state.isLoading = false;
+            state.error = action.error.message;
+            state.user = action.payload;
+        })
+
+        builder.addCase(deleteAddressData.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.error = action.error.message;
+            state.user = action.payload;
         })
 
     }
