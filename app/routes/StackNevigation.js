@@ -18,6 +18,8 @@ import Feather from 'react-native-vector-icons/Feather';
 import SignUp from '../cointener/SignUp';
 import Login from '../cointener/Login';
 import Password from '../cointener/Password';
+import ProfileEdit from '../cointener/Profile/ProfileEdit';
+import Login2 from '../cointener/Task/Login2';
 
 
 
@@ -59,6 +61,7 @@ export const ProductStack = ({ navigation }) => {
             <Stack.Screen name='Bag' component={MyBag} />
             <Stack.Screen name='Favourate' component={Favourate} />
             <Stack.Screen name='Profile' component={MyProfile} />
+            <Stack.Screen name='UpdateProfile' component={ProfileEdit} />
             <Stack.Screen name='Payment' component={Payment} />
             <Stack.Screen name='Address' component={Address} />
             <Stack.Screen name='Success' component={Success}

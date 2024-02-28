@@ -1,4 +1,4 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Profileinput from '../../component/Profileinput'
 
@@ -13,10 +13,10 @@ export default function MyProfile({navigation}) {
             style={{ width: '100%', height: '100%', borderRadius: 100 }}
           />
         </View>
-        <View style={{ padding: 20, marginLeft: 10 }}>
+        <TouchableOpacity style={{ padding: 20, marginLeft: 10 }} onPress={()=>navigation.navigate('UpdateProfile')}>
           <Text style={{ fontSize: 22, color: 'black', fontWeight: '900' }}>Parth Patoliya</Text>
           <Text style={{ fontSize: 15, marginTop: 2 }}>parthpatoliya@Gmail.com</Text>
-        </View>
+        </TouchableOpacity>
       </View>
 
       <Profileinput
