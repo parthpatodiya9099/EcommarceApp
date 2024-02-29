@@ -3,6 +3,7 @@ import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
 import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 
 const initialState = {
     isLoading: false,
@@ -13,29 +14,46 @@ const initialState = {
 export const addAddressData = createAsyncThunk(
     'auth/addressAdd',
     async (data) => {
-    
-            await firestore()
-                .collection('users')
-                .doc(data.uid)
-                .update({
-                    address: firestore.FieldValue.arrayUnion(data.address)
-                })
-                .then(() => {
-                    console.log('user data update successfully');
-                });
-            let userData;
+        let allData = { ...data }
+        let Temparr = data.image.path.split('/')
+        let imgname = Temparr[Temparr.length - 1];
+        let rno = Math.floor(Math.random() * 1000);
 
-            await firestore()
-                .collection('users')
-                .doc(data.uid)
-                .get()
-                .then(documentSnapshot => {
-                    console.log('User exists:', documentSnapshot.exists);
-                    if (documentSnapshot.exists) {
-                        userData = documentSnapshot.data();
-                    }
-                })
-            return { ...userData, id: data.uid }
+        let imageFinnalyName = rno + '_' + imgname;
+        const imgref = storage().ref('profilepicture/' + imageFinnalyName);
+        console.log(imgref);
+        const task = await imgref.putFile(data.image.path);
+
+        const url = await storage().ref('profilepicture/' + imageFinnalyName).getDownloadURL();
+        allData.image = url
+        allData.imgname = imageFinnalyName
+
+
+        await firestore()
+            .collection('users')
+            .doc(data.uid)
+            .update({
+                address: firestore.FieldValue.arrayUnion(data.address),
+                mobilenumber: data.mobilenumber,
+                image: url,
+                imgname: imageFinnalyName
+            })
+            .then(() => {
+                console.log('user data update successfully');
+            });
+        let userData;
+
+        await firestore()
+            .collection('users')
+            .doc(data.uid)
+            .get()
+            .then(documentSnapshot => {
+                console.log('User exists:', documentSnapshot.exists);
+                if (documentSnapshot.exists) {
+                    userData = documentSnapshot.data();
+                }
+            })
+        return { ...userData, id: data.uid }
     }
 
 )

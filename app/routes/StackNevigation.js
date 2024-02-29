@@ -20,6 +20,7 @@ import Login from '../cointener/Login';
 import Password from '../cointener/Password';
 import ProfileEdit from '../cointener/Profile/ProfileEdit';
 import Login2 from '../cointener/Task/Login2';
+import Login22 from '../cointener/Task/Login22';
 
 
 
@@ -50,9 +51,9 @@ export const ProductStack = ({ navigation }) => {
                 }
             }}
         >
-            <Stack.Screen name='Product' component={Product} 
+            <Stack.Screen name='Product' component={Product}
                 options={{
-                    headerShown:false
+                    headerShown: false
                 }}
             />
             <Stack.Screen name='ProductList' component={ProductList} />
@@ -63,6 +64,10 @@ export const ProductStack = ({ navigation }) => {
             <Stack.Screen name='Profile' component={MyProfile} />
             <Stack.Screen name='UpdateProfile' component={ProfileEdit} />
             <Stack.Screen name='Payment' component={Payment} />
+
+            <Stack.Screen name='Login2' component={Login2} />
+            <Stack.Screen name='Login22' component={Login22} />
+
             <Stack.Screen name='Address' component={Address} />
             <Stack.Screen name='Success' component={Success}
                 options={{
@@ -70,60 +75,60 @@ export const ProductStack = ({ navigation }) => {
                 }}
             />
             <Stack.Screen name='Filter' component={Filter} />
-            <Stack.Screen name='MyOrder' component={MyOrder}/>
+            <Stack.Screen name='MyOrder' component={MyOrder} />
             <Stack.Screen name='Info' component={ShippingInfo} />
-            <Stack.Screen name='SignUp' component={SignUp}  options={{
-                    headerShown: false
-                }} />
-            <Stack.Screen name='login' component={Login}  options={{
-                    headerShown: false
-                }}/>
+            <Stack.Screen name='SignUp' component={SignUp} options={{
+                headerShown: false
+            }} />
+            <Stack.Screen name='login' component={Login} options={{
+                headerShown: false
+            }} />
             <Stack.Screen name='Password' component={Password} options={{
-                    headerShown: false
-                }} />
+                headerShown: false
+            }} />
 
 
 
         </Stack.Navigator>
 
-        
+
     )
-}   
+}
 
 const HomeStack = () => {
-    return(
+    return (
         <Stack.Navigator>
 
         </Stack.Navigator>
     )
 }
 const ShopStack = () => {
-    return(
+    return (
         <Stack.Navigator>
 
         </Stack.Navigator>
     )
 }
 const FavourateStack = () => {
-    return(
+    return (
         <Stack.Navigator>
-             <Stack.Screen name='Favourate' component={Favourate} />
+            <Stack.Screen name='Favourate' component={Favourate} />
         </Stack.Navigator>
     )
 }
 const ProfileStack = () => {
-    return(
+    return (
         <Stack.Navigator>
-            
+
         </Stack.Navigator>
     )
 }
 const BagStack = () => {
-    return(
+    return (
         <Stack.Navigator>
-            
+
         </Stack.Navigator>
     )
 }
 
-export {HomeStack,ShopStack,FavourateStack,ProfileStack,BagStack}
+export { HomeStack, ShopStack, FavourateStack, ProfileStack, BagStack }

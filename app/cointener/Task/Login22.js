@@ -4,7 +4,7 @@ import TaskBtn from './TaskBtn'
 import { Image } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-export default function Login() {
+export default function Login22({navigation}) {
     return (
         <View>
             <View style={style.mainbox}>
@@ -62,7 +62,7 @@ export default function Login() {
                         </View>
                     </View>
                 </View>
-                <TouchableOpacity style={style.log}>
+                <TouchableOpacity style={style.log} onPress={()=> (navigation.navigate('Login2'))}>
                         <Text style={style.logtxt}>Already have an account ?<Text style={style.logtxt2}> Log In</Text></Text>
                     </TouchableOpacity>
             </View>

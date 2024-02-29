@@ -3,10 +3,8 @@ import React from 'react'
 import TaskBtn from './TaskBtn'
 import { Image } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import { VELOCITY_EPS } from 'react-native-reanimated/lib/typescript/reanimated2/animation/decay/utils';
 
-export default function Login2({navagation}) {
+export default function Login2({navigation}) {
     return (
         <View>
             <View style={style.mainbox}>
@@ -67,7 +65,7 @@ export default function Login2({navagation}) {
                         </View>
                     </View>
                 </View>
-                    <TouchableOpacity style={style.log}>
+                    <TouchableOpacity style={style.log} onPress={()=>(navigation.navigate('Login22'))}>
                         <Text style={style.logtxt}>Don't have an account ?<Text style={style.logtxt2}> Sign Up</Text></Text>
                     </TouchableOpacity>
             </View>

@@ -3,9 +3,38 @@ import React, { useState } from 'react'
 import Feather from 'react-native-vector-icons/Feather';
 import AppButton from '../../component/Button/AppButton';
 import ImagePicker from 'react-native-image-crop-picker';
-// import * as ImagePicker from 'react-native-image-picker';
+import * as yup from 'yup';
+import { useFormik } from 'formik'
+import { useDispatch } from 'react-redux';
+import { addAddressData } from '../../redux/slices/authSlice';
 export default function ProfileEdit() {
+    const dispatch = useDispatch();
     const [model, Setmodel] = useState(false)
+
+
+    const ProfileUpadate = yup.object({
+        fullname: yup.string().required(),
+        email: yup.string().email().required(),
+        mobilenumber:yup.string().required(),
+        image: yup.mixed().required()
+    })
+    const formik = useFormik({
+        initialValues: {
+            fullname: '',
+            email:'',
+            mobilenumber:'',
+            image:''
+        },
+        validationSchema: ProfileUpadate,
+        onSubmit: (values, { resetForm }) => {
+          console.log(values);
+            resetForm()
+        }
+    })
+    const handleSubmit = () => {
+        dispatch(addAddressData(values))    
+    }
+    const { handleBlur, handleChange, touched, errors, values,setFieldValue } = formik
     const handlemodle = () => {
         Setmodel(true)
     }
@@ -14,9 +43,10 @@ export default function ProfileEdit() {
         ImagePicker.openPicker({
             width: 300,
             height: 400,
-            cropping: true
+            cropping: true,
+            name: 'image',
         }).then(image => {
-            console.log(image);
+            setFieldValue('image', image)
         });
     }
     const handlecamera = () => {
@@ -24,9 +54,9 @@ export default function ProfileEdit() {
         ImagePicker.openCamera({
             width: 300,
             height: 400,
-            cropping: true,
+            name: 'image',
         }).then(image => {
-            console.log(image);
+            setFieldValue('image', image)
         });
     }
     return (
@@ -44,24 +74,37 @@ export default function ProfileEdit() {
                 <TextInput
                     placeholder='Please Enter Your FullName'
                     style={{ width: '100%', height: '100%' }}
+                    name='fullname'
+                    onBlur={handleBlur('fullname')}
+                    onChangeText={handleChange('fullname')}
+                    value={values.fullname}
                 />
             </View>
             <View style={style.box2}>
                 <TextInput
                     placeholder='Please Enter Email-Id'
                     style={{ width: '100%', height: '100%' }}
+                    name='email'
+                    onBlur={handleBlur('email')}
+                    onChangeText={handleChange('email')}
+                    value={values.email}
                 />
             </View>
             <View style={style.box2}>
                 <TextInput
                     placeholder='Please Enter Your Mobile Number'
                     style={{ width: '100%', height: '100%' }}
+                    name='mobilenumber'
+                    onBlur={handleBlur('mobilenumber')}
+                    onChangeText={handleChange('mobilenumber')}
+                    value={values.mobilenumber}
                 />
             </View>
 
             <View style={style.box3}>
                 <AppButton
                     titel={'Submit'}
+                    onPress={()=>handleSubmit()}
                 />
             </View>
 
@@ -107,7 +150,7 @@ const style = StyleSheet.create({
     btnbox: {
         width: 60,
         height: 60,
-        backgroundColor: 'green',
+        backgroundColor: '#DB3022',
         borderRadius: 100,
         marginLeft: 120,
         marginTop: 140,
@@ -117,7 +160,7 @@ const style = StyleSheet.create({
     },
     box2: {
         width: '90%',
-        height: 40,
+        height: 50,
         backgroundColor: 'white',
         marginLeft: 20,
         marginTop: 20,
