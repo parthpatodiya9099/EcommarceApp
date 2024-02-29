@@ -1,12 +1,14 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 
 export default function Task() {
     const [fdata, setData] = useState([]);
+
     useEffect(() => {
         getdata()
     }, [])
+
     const getdata = () => {
         axios.get('https://api.coindesk.com/v1/bpi/currentprice.json')
             .then(response => {
@@ -15,46 +17,63 @@ export default function Task() {
             .catch(error => {
                 console.log(error);
             })
-
-
     }
-    return (
+
+    const renderItem = ({ item }) => (
         <View>
-            {
-                fdata.map((v, i) => {
-                    console.log(v.bpi, 'lllllllllllllllllllll');
-                    return (
-                        <ScrollView key={i} style={{flexDirection:'row'}}>
-                            <View style={style.des}>
-                            <Text style={{fontSize:20,color:'black'}}>{v.bpi.USD.code}</Text>
-                            <Text>{v.bpi.USD.symbol}</Text>
-                            <Text>{v.bpi.USD.rate}</Text>
-                            <Text>{v.bpi.USD.description}</Text>
-                            <Text>{v.bpi.USD.rate_float}</Text>
-                            </View>
-                            <View  style={style.des}>
-                            <Text style={{fontSize:20,color:'black'}}>{v.bpi.GBP.code}</Text>
-                            <Text>{v.bpi.GBP.symbol}</Text>
-                            <Text>{v.bpi.GBP.rate}</Text>
-                            <Text>{v.bpi.GBP.description}</Text>
-                            <Text>{v.bpi.GBP.rate_float}</Text>
-                            </View>
-                            <View  style={style.des}>
-                            <Text style={{fontSize:20,color:'black'}}>{v.bpi.EUR.code}</Text>
-                            <Text>{v.bpi.EUR.symbol}</Text>
-                            <Text>{v.bpi.EUR.rate}</Text>
-                            <Text>{v.bpi.EUR.description}</Text>
-                            <Text>{v.bpi.EUR.rate_float}</Text>
-                            </View>
-                        </ScrollView>
-                    )
-                })
-            }
+            <View style={style.tableRow}>
+                <Text >{item.bpi.USD.code}</Text>
+                <Text style={style.tableHeader}>{item.bpi.USD.rate}</Text>
+                <Text style={style.tableHeader}>{item.bpi.USD.symbol}</Text>
+                <Text style={style.tabledis}>{item.bpi.USD.description}</Text>
+            </View>
+            <View style={style.tableRow}>
+                <Text >{item.bpi.GBP.code}</Text>
+                <Text style={style.tableHeader}>{item.bpi.GBP.rate}</Text>
+                <Text style={style.tableHeader}>{item.bpi.GBP.symbol}</Text>
+                <Text style={style.tabledis}>{item.bpi.GBP.description}</Text>
+            </View>
+            <View style={style.tableRow}>
+                <Text>{item.bpi.EUR.code}</Text>
+                <Text style={style.tableHeader}>{item.bpi.EUR.rate}</Text>
+                <Text style={style.tableHeader}>{item.bpi.EUR.symbol}</Text>
+                <Text style={style.tabledis}>{item.bpi.EUR.description}</Text>
+            </View>
         </View>
+    );
+
+    return (
+        <FlatList
+            data={fdata}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={renderItem}
+            ListHeaderComponent={() => (
+                <View style={style.des}>
+                  
+                </View>
+            )}
+        />
     )
 }
+
 const style = StyleSheet.create({
-    des:{
-        marginLeft:10
-    }
-})
+    des: {
+        marginTop: 10,
+    },
+    tableRow: {
+        flexDirection: 'row',
+        borderWidth: 1,
+        marginTop: 5,
+        marginLeft: 5,
+        marginRight: 5,
+        padding: 10
+    },
+    tabledis: {
+        flexDirection: 'row',
+        marginLeft: 10,
+    },
+    tableHeader: {
+        fontWeight: 'bold',
+        marginLeft: 40
+    },
+});
