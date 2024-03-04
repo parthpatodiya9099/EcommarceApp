@@ -4,63 +4,77 @@ import TaskBtn from './TaskBtn'
 import { Image } from 'react-native'
 
 export default function Otp() {
-  return (
-    <View>
-    <View style={style.mainbox}>
-        <View style={style.imgbox}>
-            <Image
-                source={require('../../../assets/images/handotp.png')}
-                // style={{ width: "90%", height: "100%" }}
-            />
-        </View>
-        <View style={style.txtbox}>
-            <Text style={style.txt1}>OTP Verification</Text>
-            <Text style={style.txt2}>We have sent an OTP to your phone number !</Text>
-        </View>
-        <View style={style.singbox}>
-            <View style={style.googlebox}>
-            <TextInput 
-                style={{height:'100%',width:'100%',color:'white'}} 
-                keyboardType='numeric'  
-            />
-            </View>
-            <View style={style.googlebox}>
-            <TextInput 
-                style={{height:'100%',width:'100%',color:'white'}}
-                keyboardType='numeric'     
-            />  
-            </View>
-            <View style={style.googlebox}>
-            <TextInput 
-                style={{height:'100%',width:'100%',color:'white'}}   
-                keyboardType='numeric'  
-            />
-            </View>
-            <View style={style.googlebox}>
-            <TextInput 
-                style={{height:'100%',width:'100%',color:'white'}}
-                keyboardType='numeric' 
-                    
-            />
-            </View>
-        </View>
-        <View style={style.timer}>
-            <Text style={style.timetxt1}>00:120 Sec</Text>
-            <Text style={style.timetxt2}>Didn't receive OTP ?<Text style={style.timetxt3}> Resend OTP</Text></Text>
-        </View>
-        <View style={style.veribtn}>
-        <TaskBtn
-            title={'Verify'}
-        />
-        </View>
-       
-        
+    return (
+        <View>
+            <View style={style.mainbox}>
+                <View style={style.imgbox}>
+                    <Image
+                        source={require('../../../assets/images/handotp.png')}
+                    // style={{ width: "90%", height: "100%" }}
+                    />
+                </View>
+                <View style={style.txtbox}>
+                    <Text style={style.txt1}>OTP Verification</Text>
+                    <Text style={style.txt2}>We have sent an OTP to your phone number !</Text>
+                </View>
+                <View style={style.singbox}>
+                    <View style={style.googlebox}>
+                        <TextInput
+                            ref={et1}
+                            style={{ height: '100%', width: '100%', color: 'white' }}
+                            keyboardType='numeric'
+                            maxLength={1}
+                            onChangeText={txt => {
+                                if (txt.length >=1){
+                                    et2.current.focus()
+                                }
+                            }}
+                        />
+                    </View>
+                    <View style={style.googlebox}>
+                        <TextInput
+                            style={{ height: '100%', width: '100%', color: 'white' }}
+                            keyboardType='numeric'
+                            ref={et2}
+                            maxLength={1}
+                            
+                        />
+                    </View>
+                    <View style={style.googlebox}>
+                        <TextInput
+                            style={{ height: '100%', width: '100%', color: 'white' }}
+                            keyboardType='numeric'
+                            ref={et3}
+                            maxLength={1}
+                        />
+                    </View>
+                    <View style={style.googlebox}>
+                        <TextInput
+                            style={{ height: '100%', width: '100%', color: 'white' }}
+                            keyboardType='numeric'
+                            ref={et4}
+                            maxLength={1}
 
-        
+                        />
+                    </View>
+                </View>
+                <View style={style.timer}>
+                    <Text style={style.timetxt1}>00:120 Sec</Text>
+                    <Text style={style.timetxt2}>Didn't receive OTP ?<Text style={style.timetxt3}> Resend OTP</Text></Text>
+                </View>
+                <View style={style.veribtn}>
+                    <TaskBtn
+                        title={'Verify'}
+                    />
+                </View>
 
-    </View>
-</View>
-  )
+
+
+
+
+            </View>
+        </View>
+    )
 }
 
 const style = StyleSheet.create({
@@ -74,7 +88,7 @@ const style = StyleSheet.create({
         height: 200,
         marginLeft: 30,
         marginTop: 40,
-        padding:20,
+        padding: 20,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -94,7 +108,7 @@ const style = StyleSheet.create({
         marginTop: 10,
         color: 'white',
         textAlign: 'center',
-        justifyContent:'center'
+        justifyContent: 'center'
     },
     inputbox: {
         width: '90%',
@@ -142,31 +156,31 @@ const style = StyleSheet.create({
         borderWidth: 0.5,
         borderColor: '#f5f5f5',
         borderRadius: 10,
-        backgroundColor:'transparent',
+        backgroundColor: 'transparent',
 
     },
-    timer:{
+    timer: {
         width: '90%',
         height: 100,
         marginLeft: 20,
         marginTop: 30,
     },
-    timetxt1:{
-        color:'white',
-        textAlign:'center',
-        marginTop:20
+    timetxt1: {
+        color: 'white',
+        textAlign: 'center',
+        marginTop: 20
     },
-    timetxt2:{
-        color:'white',
-        textAlign:'center',
-        marginTop:20
+    timetxt2: {
+        color: 'white',
+        textAlign: 'center',
+        marginTop: 20
     },
-    timetxt3:{
-        color:'skyblue',
-        textAlign:'center',
-        marginTop:20
+    timetxt3: {
+        color: 'skyblue',
+        textAlign: 'center',
+        marginTop: 20
     },
-    veribtn:{
-        marginTop:100
+    veribtn: {
+        marginTop: 100
     }
 })
