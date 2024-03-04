@@ -21,6 +21,7 @@ import Password from '../cointener/Password';
 import ProfileEdit from '../cointener/Profile/ProfileEdit';
 import Login2 from '../cointener/Task/Login2';
 import Login22 from '../cointener/Task/Login22';
+import AddressCheckOut from '../cointener/Cart/AddressCheckOut';
 
 
 
@@ -65,8 +66,7 @@ export const ProductStack = ({ navigation }) => {
             <Stack.Screen name='UpdateProfile' component={ProfileEdit} />
             <Stack.Screen name='Payment' component={Payment} />
 
-            <Stack.Screen name='Login2' component={Login2} />
-            <Stack.Screen name='Login22' component={Login22} />
+            <Stack.Screen name='CheckOut' component={AddressCheckOut} />
 
             <Stack.Screen name='Address' component={Address} />
             <Stack.Screen name='Success' component={Success}

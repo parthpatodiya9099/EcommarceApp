@@ -11,37 +11,38 @@ const initialState = {
     user: null
 }
 
-export const addAddressData = createAsyncThunk(
-    'auth/addressAdd',
+export const UserInfo = createAsyncThunk(
+    'auth/userInfo',
     async (data) => {
+        console.log(data.image, '33333333333333333333333333333333333');
         let allData = { ...data }
         let Temparr = data.image.path.split('/')
+
         let imgname = Temparr[Temparr.length - 1];
         let rno = Math.floor(Math.random() * 1000);
-
         let imageFinnalyName = rno + '_' + imgname;
-        const imgref = storage().ref('profilepicture/' + imageFinnalyName);
-        console.log(imgref);
-        const task = await imgref.putFile(data.image.path);
+        const imgref = storage().ref('Profile/' + imageFinnalyName);
 
-        const url = await storage().ref('profilepicture/' + imageFinnalyName).getDownloadURL();
+        const task = await imgref.putFile(data.image.path);
+        const url = await storage().ref('Profile/' + imageFinnalyName).getDownloadURL();
+        console.log(url, "urllllllllllllllllllll");
         allData.image = url
         allData.imgname = imageFinnalyName
-
 
         await firestore()
             .collection('users')
             .doc(data.uid)
-            .update({
-                address: firestore.FieldValue.arrayUnion(data.address),
-                mobilenumber: data.mobilenumber,
-                image: url,
-                imgname: imageFinnalyName
-            })
+            .update(
+                {
+                    mobileNumber: data.mobilenumber,
+                    imageurl: url,
+                    imgname: imageFinnalyName
+                }
+            )
             .then(() => {
                 console.log('user data update successfully');
             });
-        let userData;
+        let userdata
 
         await firestore()
             .collection('users')
@@ -50,10 +51,39 @@ export const addAddressData = createAsyncThunk(
             .then(documentSnapshot => {
                 console.log('User exists:', documentSnapshot.exists);
                 if (documentSnapshot.exists) {
-                    userData = documentSnapshot.data();
+                    userdata = documentSnapshot.data();
                 }
             })
-        return { ...userData, id: data.uid }
+        return { ...userdata, uid: data.uid }
+    }
+
+)
+
+export const addAddressData = createAsyncThunk(
+    'auth/addressAdd',
+    async (data) => {
+        await firestore()
+            .collection('users')
+            .doc(data.uid)
+            .update(
+                { address: firestore.FieldValue.arrayUnion(data.address) },
+            )
+            .then(() => {
+                console.log('user data update successfully');
+            });
+        let userdata
+        await firestore()
+            .collection('users')
+            .doc(data.uid)
+            .get()
+            .then(documentSnapshot => {
+                console.log('User exists:', documentSnapshot.exists);
+                if (documentSnapshot.exists) {
+                    userdata = documentSnapshot.data();
+                }
+                console.log(userdata, 'userrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+            })
+        return { ...userdata, uid: data.uid }
     }
 
 )
@@ -61,13 +91,47 @@ export const addAddressData = createAsyncThunk(
 export const deleteAddressData = createAsyncThunk(
     'auth/addressDelete',
     async (data) => {
-        console.log(data.id, 'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+        console.log(data, '000000000000000000000000');
         try {
             await firestore()
                 .collection('users')
-                .doc(data.id)
+                .doc(data.uid)
                 .update({
                     address: firestore.FieldValue.arrayRemove(data.data)
+                })
+                .then(() => {
+                    console.log('user data update successfully');
+                });
+
+        } catch (err) {
+            console.log(err);
+            throw (err);
+        }
+        let userdata
+        await firestore()
+            .collection('users')
+            .doc(data.uid)
+            .get()
+            .then(documentSnapshot => {
+                console.log('User exists:', documentSnapshot.exists);
+                if (documentSnapshot.exists) {
+                    userdata = documentSnapshot.data();
+                }
+                console.log(userdata, 'userrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+            })
+        return { ...userdata, uid: data.uid }
+
+    }
+)
+export const updateAddressData = createAsyncThunk(
+    'auth/addressupdate',
+    async (data) => {
+        try {
+            await firestore()
+                .collection('users')
+                .doc(data.uid)
+                .update({
+                    address: firestore.FieldValue.arrayRemove(data.oldData)
                 })
                 .then(() => {
                     console.log('user data update successfully');
@@ -76,17 +140,36 @@ export const deleteAddressData = createAsyncThunk(
             console.log(err);
             throw (err);
         }
+        await firestore()
+            .collection('users')
+            .doc(data.uid)
+            .update(
+                { address: firestore.FieldValue.arrayUnion(data.address) },
+            )
+            .then(() => {
+                console.log('user data update successfully');
+            });
+        let userdata
+        await firestore()
+            .collection('users')
+            .doc(data.uid)
+            .get()
+            .then(documentSnapshot => {
+                console.log('User exists:', documentSnapshot.exists);
+                if (documentSnapshot.exists) {
+                    userdata = documentSnapshot.data();
+                }
 
+            })
+        return { ...userdata, uid: data.uid }
     }
 )
-
 export const googleSingin = createAsyncThunk(
     'auth/googleSingin',
     async () => {
         await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
         // Get the users ID token
         const user = await GoogleSignin.signIn()
-        console.log(user, 'userrrrrrrrrrrrrrrrrrrrrrrrrrr');
 
         // Create a Google credential with the token
         const googleCredential = auth.GoogleAuthProvider.credential(user.idToken);
@@ -214,25 +297,33 @@ const authSlice = createSlice({
         builder.addCase(googleSingin.fulfilled, (state, action) => {
             state.user = action.payload;
             state.isLoading = false;
-            state.error = action.error.message;
+            state.error = null
         })
 
         builder.addCase(facebookauth.fulfilled, (state, action) => {
             state.user = action.payload;
             state.isLoading = false;
-            state.error = action.error.message;
+            state.error = null
         })
 
         builder.addCase(addAddressData.fulfilled, (state, action) => {
-            state.isLoading = false;
-            state.error = action.error.message;
             state.user = action.payload;
         })
 
         builder.addCase(deleteAddressData.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.error = action.error.message;
             state.user = action.payload;
+            state.error = null
+        })
+        builder.addCase(UserInfo.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.user = action.payload;
+            state.error = null
+        })
+        builder.addCase(updateAddressData.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.user = action.payload;
+            state.error = null
         })
 
     }

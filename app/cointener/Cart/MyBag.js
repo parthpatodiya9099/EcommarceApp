@@ -30,7 +30,7 @@ export default function MyBag({ navigation }) {
   const TotelAmount = parseInt(AddCartData.reduce((acc,v,i)=>acc+(v.Price*v.qty),0))
 
   const HandleAction = () => {
-    navigation.navigate('Address')
+    navigation.navigate('CheckOut',{totel:TotelAmount,pdata:AddCartData})
   }
 
   return (

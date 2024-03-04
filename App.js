@@ -6,13 +6,7 @@ import { persistor, store } from './app/redux/Store';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import SplashScreen from './app/cointener/SplashScreen';
-import AddressView from './app/component/InputBox/AddressView';
-import Login from './app/cointener/Task/Login22';
-import Login2 from './app/cointener/Task/Login2';
-import Otp from './app/cointener/Task/Otp';
-import SplaceScreenTask from './app/cointener/Task/SplaceScreenTask';
-import Task from './app/cointener/Task/Task';
-import Login22 from './app/cointener/Task/Login22';
+
 
 export default function App() {
   const [showSplashScreen, setShowSplashScreen] = useState(true);
@@ -32,7 +26,7 @@ export default function App() {
           {
             showSplashScreen?<SplashScreen/>:<BottomTab/>
           }
-          {/* <SplaceScreenTask/>
+          {/* <SplaceScreenTask/> */}
           {/* <Otp/> */}
           {/* <Task />   */}
           {/* <Login2/> */}
