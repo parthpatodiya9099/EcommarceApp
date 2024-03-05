@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import SplashScreen from './app/cointener/SplashScreen';
 import HaderCom from './app/cointener/Task/Search';
+import UiScreen1 from './app/cointener/Task/Ui/UiScreen1';
 
 
 export default function App() {
@@ -24,16 +25,15 @@ export default function App() {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <NavigationContainer>
-          {/* {
+          {
             showSplashScreen?<SplashScreen/>:<BottomTab/>
-          } */}
+          }
           {/* <SplaceScreenTask/> */}
           {/* <Otp/> */}
           {/* <Task />   */}
           {/* <Login2/> */}
           {/* <Login22/>  */}
-          <BottomTab />
-          {/* <HaderCom /> */}
+          {/* <BottomTab /> */}
         </NavigationContainer>
       </PersistGate>
     </Provider>
