@@ -1,12 +1,23 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Alert } from 'react-native'
 import React from 'react'
 import Profileinput from '../../component/Profileinput'
-import { useSelector } from 'react-redux'
-
+import { useDispatch, useSelector } from 'react-redux'
+import { logoutuser } from '../../redux/slices/authSlice'
 
 export default function MyProfile({ navigation }) {
   const authdata = useSelector(state => state.auth)
+  const dispatch = useDispatch()
+  const handleLogOut = () => {
+    Alert.alert('Logout Alert ', 'You really want to LogOut ?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+      },
+      { text: 'Ok', onPress:()=>dispatch(logoutuser()) },
+    ]);
 
+
+  }
   return (
     <View>
       <View style={{ flexDirection: 'row', width: "90%", height: 80, marginLeft: 10, marginTop: 10 }}>
@@ -50,8 +61,9 @@ export default function MyProfile({ navigation }) {
       />
 
       <Profileinput
-        name="Settings"
-        titel="Notifications              "
+        name="Logout"
+        titel="Notifications               "
+        onPress={() => handleLogOut()}
       />
     </View>
   )

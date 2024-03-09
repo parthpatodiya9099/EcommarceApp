@@ -26,11 +26,16 @@ export default function MyBag({ navigation }) {
     const productObj = productData.data.find((p) => p.id === c.id)
     return { ...productObj, qty: c.qty }
   })
-
-  const TotelAmount = parseInt(AddCartData.reduce((acc,v,i)=>acc+(v.Price*v.qty),0))
+  const PriceData = AddCartData.map((p)=>{
+    const cdata = cart.cart.find((c)=>c.id == p.id)
+    return {...cdata,Price: p.Price}
+  })
+console.log(AddCartData);
+  const TotelAmount = AddCartData.reduce((acc,v)=>acc+(v.Price*v.qty),0)
 
   const HandleAction = () => {
-    navigation.navigate('CheckOut',{totel:TotelAmount,pdata:AddCartData})
+    console.log(PriceData);
+    navigation.navigate('CheckOut',{total:TotelAmount,pdata:PriceData})
   }
 
   return (

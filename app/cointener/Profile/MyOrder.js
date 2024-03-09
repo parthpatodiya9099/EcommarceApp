@@ -1,14 +1,21 @@
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
-import React from 'react'
-import Orderinput from '../../component/Orderinput'
+import React, { useEffect } from 'react'
 import Feather from 'react-native-vector-icons/Feather';
 import Slider from 'react-native-slider';
 import { verticalScale } from '../../Constant/Metrics';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOrderData } from '../../redux/slices/CheckOutSlice';
+import Orderinput from '../../component/Orderinput';
 
 export default function MyOrder({ navigation }) {
-  // const handleBack = () => {
-  //   navigation.goBack();
-  // }
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getOrderData())
+  }, [])
+
+  const orderData = useSelector(state => state.order)
+
+
   return (
     <View>
 
@@ -25,58 +32,32 @@ export default function MyOrder({ navigation }) {
       </View>
 
       <ScrollView>
-        <View style={{ paddingBottom: verticalScale(60) }}>
 
-          <Orderinput
-            ordernumber="91457387"
-            date="11/02/2022"
-            TNumber="IW4553256776"
-            Quantity="3"
-            Amount="$122"
-          />
-          <Orderinput
-            ordernumber="78649086"
-            date="11/02/2022"
-            TNumber="IW4553256887"
-            Quantity="2"
-            Amount="$120"
-          />
-          <Orderinput
-            ordernumber="9764377"
-            date="11/02/2022"
-            TNumber="IW4553256789"
-            Quantity="3"
-            Amount="$115"
-          />
-          <Orderinput
-            ordernumber="9764377"
-            date="11/02/2022"
-            TNumber="IW4553256789"
-            Quantity="3"
-            Amount="$115"
-          />
-          <Orderinput
-            ordernumber="9764377"
-            date="11/02/2022"
-            TNumber="IW4553256789"
-            Quantity="3"
-            Amount="$115"
-          />
-          <Orderinput
-            ordernumber="9764377"
-            date="11/02/2022"
-            TNumber="IW4553256789"
-            Quantity="3"
-            Amount="$115"
-          />
-          <Orderinput
-            ordernumber="9764377"
-            date="11/02/2022"
-            TNumber="IW4553256789"
-            Quantity="3"
-            Amount="$115"
-          />
-        </View>
+        {
+          orderData.order && orderData.order.length > 0 ? (
+            orderData.order.map((v) => {
+              return v.order && v.order.length > 0 ? (
+                v.order.map((v1,i) => {
+                  return (
+                    <Orderinput
+                      key={i}
+                      ordernumber={v1.orderId}
+                      date={v1.orderDate}
+                      Quantity={[v1.items].reduce((acc, items) => acc + items.qty, 0)}
+                      Amount={v1.items.qty * v1.items.productprice}
+                      onPress={() => navigation.navigate('Details', { orderId: v1.orderId })}
+                    />
+                  )
+
+                })
+              ) : null
+
+
+            })
+          ) : null
+        }
+
+
       </ScrollView>
     </View>
   )

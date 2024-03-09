@@ -18,7 +18,6 @@ export default function Product({ navigation }) {
 
  
   const data = useSelector(state => state.product);
-  console.log(data.data,'llllllllllllllllllllllljjjjjjjjjjjjjjjjjjjjjj77777777777777777777777');
   const category = useSelector(state => state.category);
 
 

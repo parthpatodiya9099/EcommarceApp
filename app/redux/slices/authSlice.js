@@ -10,7 +10,15 @@ const initialState = {
     error: null,
     user: null
 }
-
+export const logoutuser = createAsyncThunk(
+    'auth/logout',
+    async () => {
+        await auth()
+            .signOut()
+            .then(() => console.log('User signed out!'));
+            return null
+    }
+)
 export const UserInfo = createAsyncThunk(
     'auth/userInfo',
     async (data) => {
@@ -321,6 +329,11 @@ const authSlice = createSlice({
             state.error = null
         })
         builder.addCase(updateAddressData.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.user = action.payload;
+            state.error = null
+        })
+        builder.addCase(logoutuser.fulfilled, (state, action) => {
             state.isLoading = false;
             state.user = action.payload;
             state.error = null

@@ -22,6 +22,8 @@ import ProfileEdit from '../cointener/Profile/ProfileEdit';
 import Login2 from '../cointener/Task/Login2';
 import Login22 from '../cointener/Task/Login22';
 import AddressCheckOut from '../cointener/Cart/AddressCheckOut';
+import OrderDetails from '../cointener/Profile/OrderDetails';
+import Setting from '../cointener/Profile/Setting';
 
 
 
@@ -76,6 +78,7 @@ export const ProductStack = ({ navigation }) => {
             />
             <Stack.Screen name='Filter' component={Filter} />
             <Stack.Screen name='MyOrder' component={MyOrder} />
+            <Stack.Screen name='Details' component={OrderDetails} />
             <Stack.Screen name='Info' component={ShippingInfo} />
             <Stack.Screen name='SignUp' component={SignUp} options={{
                 headerShown: false
