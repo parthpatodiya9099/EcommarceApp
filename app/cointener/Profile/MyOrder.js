@@ -14,6 +14,16 @@ export default function MyOrder({ navigation }) {
   }, [])
 
   const orderData = useSelector(state => state.order)
+  let arr = []
+  let qty
+  orderData.order.map((v) => {
+    v.order.map((v1) => {
+      v1.items.map((v2) => {
+        arr.push(v2.qty)
+        qty = arr.reduce((acc, a) => acc + a, 0)
+      })
+    })
+  })
 
 
   return (
@@ -30,31 +40,22 @@ export default function MyOrder({ navigation }) {
           <Text style={{ textAlign: 'center', color: 'black' }}>Cancelled</Text>
         </TouchableOpacity>
       </View>
-
       <ScrollView>
 
         {
-          orderData.order && orderData.order.length > 0 ? (
-            orderData.order.map((v) => {
-              return v.order && v.order.length > 0 ? (
-                v.order.map((v1,i) => {
-                  return (
-                    <Orderinput
-                      key={i}
-                      ordernumber={v1.orderId}
-                      date={v1.orderDate}
-                      Quantity={[v1.items].reduce((acc, items) => acc + items.qty, 0)}
-                      Amount={v1.items.qty * v1.items.productprice}
-                      onPress={() => navigation.navigate('Details', { orderId: v1.orderId })}
-                    />
-                  )
-
-                })
-              ) : null
-
-
+          orderData.order.map((v) => {
+            return v.order.map((v1) => {
+              return (
+                <Orderinput
+                  ordernumber={v1.orderId}
+                  date={v1.orderDate}
+                  Amount={v1.totalAmount}
+                  Quantity={qty}
+                  onPress={() => navigation.navigate('Details', { orderId: v1.orderId })}
+                />
+              )
             })
-          ) : null
+          })
         }
 
 

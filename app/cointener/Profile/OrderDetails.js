@@ -6,53 +6,48 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useRoute } from '@react-navigation/native'
 import { getProductData } from '../../redux/slices/ProductSlice'
 
-export default function OrderDetails({navigation}) {
+export default function OrderDetails({ navigation }) {
     const route = useRoute()
     const orderId = route.params?.orderId
+
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(getOrderData())
         dispatch(getProductData())
     }, [])
     const productdata = useSelector(state => state.product)
-    let filterData
-    let filterData2
     const orderData = useSelector(state => state.order)
-    orderData.order.map((v, i) => {
-        v.order.map((V1) => {
-            filterData = productdata.data.filter((v) => v.id == V1.items.productId)
-        })
-    })
-    orderData.order.map((v) => {
-        filterData2 = v.order.filter((v) => v.orderId == orderId)
-    })
-    
-    let totalAmount
+
     let Address
+    let totalAmount
+    let filterdata
+
     return (
         <View style={style.mainScreen}>
             <View>
                 <ScrollView style={style.screelView}>
                     {
-                        filterData2.map((p) => (
-                            filterData.map((v, i) => {
-                                totalAmount = v.Price * p.items.qty
-                                Address = p.address
-                                return (
-                                    <DetailsCard
-                                        key={i}
-                                        imgurl={{ uri: v.image }}
-                                        product={v.title}
-                                        price={v.Price}
-                                        qty={p.items.qty}
-                                        onPress={()=>{productid = v.id, navigation.navigate('ProductDetails') }}
-                                    />
-                                )
-
-
+                        orderData.order.map((v) => {
+                            return v.order.map((v1) => {
+                                Address = v1.address;
+                                totalAmount = v1.totalAmount;
+                                return v1.items.map((v2) => {
+                                    filterdata = productdata.data.filter((p) => p.id == v2.id)
+                                    return filterdata.map((d, i) => {
+                                        return (
+                                            <DetailsCard
+                                                key={i}
+                                                imgurl={{ uri: d.image }}
+                                                product={d.title}
+                                                qty={v2.qty}
+                                                price={v2.Price * v2.qty}
+                                            // onPress={()=>navigation.navigate('ProductDetails')}
+                                            />
+                                        )
+                                    })
+                                })
                             })
-                        ))
-
+                        })
                     }
                 </ScrollView>
             </View>

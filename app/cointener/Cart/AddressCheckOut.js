@@ -18,7 +18,6 @@ export default function AddressCheckOut({ navigation }) {
 
     const total = route.params?.total
     const pdata = route.params?.pdata
-    console.log(pdata);
     let prodata;
     // pdata.map((v) => {
     //     console.log(v);
@@ -32,18 +31,11 @@ export default function AddressCheckOut({ navigation }) {
 
     const oid = Math.floor(Math.random() * 1000000)
     const handlechackout = (data) => {
-        pdata.map((v) => {
-            console.log(v);
-            prodata = {
-                productId: v.id,
-                productprice: v.Price,
-                qty: v.qty,
-            }
+       
             dispatch(addOrderData({
-                ...data, uid: uid, pdata: prodata, total: total, orderId: oid
+                ...data, uid: uid, pdata: pdata, total: total, orderId: oid
             }))
-        })
-
+            // console.log(pdata);
 
         setSelectedValue(data);
 

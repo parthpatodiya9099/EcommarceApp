@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity, Modal } from 'react-native'
+import { View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity, Modal, Alert } from 'react-native'
 import AppButton from '../../component/Button/AppButton'
 import { horizontalScale, verticalScale } from '../../Constant/Metrics'
 import * as yup from 'yup';
@@ -37,11 +37,22 @@ export default function Address({ navigation }) {
     },
     validationSchema: AddAddresSchema,
     onSubmit: (values, { resetForm }) => {
-      if(update){
-        dispatch(updateAddressData({address: values,oldData, uid: authdata.user.uid}))
+      if(route.params?.previousScreen === 'CheckOut'){
+        navigation.navigate('CheckOut')
+        dispatch(addAddressData({address: values, uid:authdata.user.uid}))
       }else{
-        dispatch(addAddressData({address: values, uid: authdata.user.uid }))
+        if(update){
+          console.log("user updateddddddddd");
+          dispatch(updateAddressData({address:values,oldData,uid:authdata.user.uid}))
+        }else{
+          dispatch(addAddressData({address: values, uid:authdata.user.uid}))
+        }
       }
+      // if(update){
+      //   dispatch(updateAddressData({address: values,oldData, uid: authdata.user.uid}))
+      // }else{
+      //   dispatch(addAddressData({address: values, uid: authdata.user.uid }))
+      // }
       resetForm()
       Setmodel(false)
       Setupdate(false)
@@ -51,8 +62,14 @@ export default function Address({ navigation }) {
   const { handleSubmit, handleBlur, handleChange, touched, errors, values,setValues } = formik
 
   const handleDelete = (data, uid) => {
-    console.log({ data, uid })
-    dispatch(deleteAddressData({ data, uid }))
+    Alert.alert('Delete', 'You really want to Delete ?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+      },
+      { text: 'Delete', onPress:()=>dispatch(deleteAddressData({ data, uid }))},
+    ]);
+    
   }
   const handleupdate = (data) => {
     console.log(data);

@@ -21,6 +21,7 @@
     "@react-navigation/native": "^6.1.10",
     "@react-navigation/native-stack": "^6.9.18",
     "@reduxjs/toolkit": "^2.2.1",
+    "@stripe/stripe-react-native": "^0.37.0",
     "add": "^2.0.6",
     "axios": "^1.6.7",
     "formik": "^2.4.5",

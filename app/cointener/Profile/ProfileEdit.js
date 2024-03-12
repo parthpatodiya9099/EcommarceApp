@@ -10,11 +10,12 @@ import { UserInfo, UserInfoget, addAddressData } from '../../redux/slices/authSl
 export default function ProfileEdit() {
     const dispatch = useDispatch();
     const [model, Setmodel] = useState(false)
+    const [profile, SetProfile] = useState(false)
     const authdata = useSelector(state => state.auth)
-    useEffect(()=>{
+    useEffect(() => {
         UserInfo()
-    },[])
-    
+    }, [])
+
     const ProfileUpadate = yup.object({
         mobilenumber: yup.string().required(),
         image: yup.mixed().required()
@@ -32,7 +33,7 @@ export default function ProfileEdit() {
     })
     const handleSubmit = () => {
         console.log(authdata.user.uid);
-        dispatch(UserInfo({...authdata.user,...values, uid: authdata.user.uid }))
+        dispatch(UserInfo({ ...authdata.user, ...values, uid: authdata.user.uid }))
     }
     const { handleBlur, handleChange, touched, errors, values, setFieldValue } = formik
     const handlemodle = () => {
@@ -59,14 +60,17 @@ export default function ProfileEdit() {
             setFieldValue('image', image)
         });
     }
+
     return (
         <View>
             <View style={style.box1}>
                 <View style={style.imgbox}>
-                    <Image
-                        source={{uri:authdata.user.imageurl}}
-                        style={{ width: "100%", height: "100%", borderRadius: 100 }}
-                    />
+                    <TouchableOpacity onPress={() => SetProfile(true)}>
+                        <Image
+                            source={{ uri: authdata.user.imageurl }}
+                            style={{ width: "100%", height: "100%", borderRadius: 100 }}
+                        />
+                    </TouchableOpacity>
                     <TouchableOpacity style={style.btnbox} onPress={() => handlemodle()}>
                         <Feather name='camera' color={'white'} size={35} style={{ marginLeft: 12, marginTop: 10 }} />
                     </TouchableOpacity>
@@ -131,7 +135,31 @@ export default function ProfileEdit() {
 
                 </Modal>
             </View>
+            <View>
+                <Modal
+                    animationType='fade'
+                    transparent={false}
+                    visible={profile}
+                >
+                    <View style={style.modle1}>
+                        <View>
+                            <TouchableOpacity onPress={() => SetProfile(false)} style={style.close}>
+                                <Text style={{ fontSize: 20 }}>X</Text>
+                            </TouchableOpacity>
+                            <Image
+                                source={{uri: authdata.user.imageurl}}
+                                style={{
+                                    width: '90%',
+                                    height: 300,
+                                    marginLeft: 20
+                                }}
+                            />
+                        </View>
+                    </View>
 
+
+                </Modal>
+            </View>
         </View>
     )
 }
@@ -213,5 +241,16 @@ const style = StyleSheet.create({
         shadowRadius: 30,
         elevation: 4,
         marginTop: 10
+    },
+    modle1: {
+        width: '100%',
+        height: '40%',
+        alignContent: 'center',
+        backgroundColor: 'white',
+        zIndex: 1,
+        marginTop: 200
+    },
+    close: {
+        marginLeft: 355,
     }
 })
