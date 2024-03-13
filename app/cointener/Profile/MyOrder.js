@@ -16,7 +16,7 @@ export default function MyOrder({ navigation }) {
   const orderData = useSelector(state => state.order)
   let arr = []
   let qty
-  orderData.order.map((v) => {
+  orderData.order && orderData.order.map((v) => {
     v.order.map((v1) => {
       v1.items.map((v2) => {
         arr.push(v2.qty)
@@ -43,10 +43,11 @@ export default function MyOrder({ navigation }) {
       <ScrollView>
 
         {
-          orderData.order.map((v) => {
-            return v.order.map((v1) => {
+          orderData.order && orderData.order.map((v) => {
+            return v.order.map((v1,i) => {
               return (
                 <Orderinput
+                key={i}
                   ordernumber={v1.orderId}
                   date={v1.orderDate}
                   Amount={v1.totalAmount}
@@ -57,8 +58,6 @@ export default function MyOrder({ navigation }) {
             })
           })
         }
-
-
       </ScrollView>
     </View>
   )

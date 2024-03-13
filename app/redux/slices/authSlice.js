@@ -16,7 +16,7 @@ export const logoutuser = createAsyncThunk(
         await auth()
             .signOut()
             .then(() => console.log('User signed out!'));
-            return null
+        return null
     }
 )
 export const UserInfo = createAsyncThunk(
@@ -66,7 +66,22 @@ export const UserInfo = createAsyncThunk(
     }
 
 )
-
+export const getAddressData = createAsyncThunk(
+    'auth/getaddress',
+    async () => {
+        let data
+        await firestore()
+            .collection('users')
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(documentSnapshot => {
+                    console.log(documentSnapshot);
+                    data = documentSnapshot.data()
+                })
+            })
+        return data
+    }
+)
 export const addAddressData = createAsyncThunk(
     'auth/addressAdd',
     async (data) => {
@@ -337,6 +352,9 @@ const authSlice = createSlice({
             state.isLoading = false;
             state.user = action.payload;
             state.error = null
+        })
+        builder.addCase(getAddressData.fulfilled, (state, action) => {
+            state.user = action.payload;
         })
 
     }

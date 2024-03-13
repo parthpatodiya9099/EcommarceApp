@@ -4,11 +4,12 @@ import { horizontalScale, verticalScale } from '../../Constant/Metrics'
 import * as yup from 'yup';
 import { useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
-import { addAddressData, deleteAddressData, updateAddressData } from '../../redux/slices/authSlice';
+import { addAddressData, deleteAddressData, getAddressData, updateAddressData } from '../../redux/slices/authSlice';
 import AddressView from '../../component/InputBox/AddressView';
 import { useEffect, useState } from 'react';
 
 export default function Address({ navigation }) {
+
   const [update,Setupdate] = useState(false)
   const [oldData,SetOldData] = useState(null)
 
@@ -37,17 +38,14 @@ export default function Address({ navigation }) {
     },
     validationSchema: AddAddresSchema,
     onSubmit: (values, { resetForm }) => {
-      if(route.params?.previousScreen === 'CheckOut'){
-        navigation.navigate('CheckOut')
-        dispatch(addAddressData({address: values, uid:authdata.user.uid}))
-      }else{
+     
         if(update){
           console.log("user updateddddddddd");
           dispatch(updateAddressData({address:values,oldData,uid:authdata.user.uid}))
         }else{
           dispatch(addAddressData({address: values, uid:authdata.user.uid}))
         }
-      }
+      
       // if(update){
       //   dispatch(updateAddressData({address: values,oldData, uid: authdata.user.uid}))
       // }else{
@@ -58,6 +56,9 @@ export default function Address({ navigation }) {
       Setupdate(false)
     }
   })
+  useEffect(()=>{
+    dispatch(getAddressData())
+  },[])
 
   const { handleSubmit, handleBlur, handleChange, touched, errors, values,setValues } = formik
 
