@@ -6,31 +6,28 @@ import { persistor, store } from './app/redux/Store';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import SplashScreen from './app/cointener/SplashScreen';
-import DetailsCard from './app/component/DetailsCard';
-import OrderDetails from './app/cointener/Profile/OrderDetails';
 
 
 
 export default function App() {
-  const [showSplashScreen, setShowSplashScreen] = useState(true);
+  // const [showSplashScreen, setShowSplashScreen] = useState(true);
 
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setShowSplashScreen(false)
-    }, 1000);
+  // useEffect(() => {
+  //   const timeoutId = setTimeout(() => {
+  //     setShowSplashScreen(false)
+  //   }, 1000);
 
-    return () => clearTimeout(timeoutId);
-  }, []);
+  //   return () => clearTimeout(timeoutId);
+  // }, []);
 
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <NavigationContainer>
-          {
+          {/* {
             showSplashScreen?<SplashScreen/>:<BottomTab/>
-          }
-          {/* <DetailsCard /> */}
-          {/* <OrderDetails /> */}
+          } */}
+          <BottomTab/>
         </NavigationContainer>
       </PersistGate>
     </Provider>

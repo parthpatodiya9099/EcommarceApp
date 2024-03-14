@@ -104,10 +104,14 @@ export default function Payment({ navigation }) {
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({amount: 500})
       });
-      console.log(response);
+      if (!response.ok) {
+        throw new Error('Failed to fetch payment sheet params');
+      }
+      console.log(response,'Responeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
     } catch (err) {
-      console.log(err);
+      console.log(err,'Errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
       throw (err)
     }
 
