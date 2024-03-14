@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AppButton from '../../component/Button/AppButton'
 import { horizontalScale, moderateScale, verticalScale } from '../../Constant/Metrics'
@@ -98,13 +98,20 @@ export default function Payment({ navigation }) {
   const [loading, setLoading] = useState(false);
 
   const fetchPaymentSheetParams = async () => {
-    const response = await fetch(`${API_URL}/payment-sheet`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const { paymentIntent, ephemeralKey, customer } = await response.json();
+    try {
+      const response = await fetch(`http://192.168.101.177:4000/payment-sheet`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+      throw (err)
+    }
+
+    const { paymentIntent,ephemeralKey, customer } = await response.json();
 
     return {
       paymentIntent,
@@ -156,7 +163,6 @@ export default function Payment({ navigation }) {
     <Screen>
       <Button
         variant="primary"
-        disabled={!loading}
         title="Checkout"
         onPress={openPaymentSheet}
       />
@@ -178,6 +184,6 @@ export default function Payment({ navigation }) {
 //     shadowRadius: 30,
 //     elevation: 4,
 //     padding: 20
-//   }
+//   },
 // })
 

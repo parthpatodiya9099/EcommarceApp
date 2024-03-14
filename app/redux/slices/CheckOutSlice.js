@@ -5,7 +5,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const initialState = {
     isLoading: false,
     error: null,
-    order:[]
+    order: []
 }
 
 export const getOrderData = createAsyncThunk(
@@ -33,13 +33,10 @@ export const getOrderData = createAsyncThunk(
 export const addOrderData = createAsyncThunk(
     'order/addOrder',
     async (data) => {
-        console.log(data,'pytrtyrytrt');
         const documentSnapshot = await firestore()
             .collection('order')
             .doc(data.uid)
             .get()
-        console.log(documentSnapshot.exists);
-
         if (documentSnapshot.exists) {
             await firestore()
                 .collection('order')
@@ -79,7 +76,7 @@ export const addOrderData = createAsyncThunk(
                 .then(() => {
                     console.log("New Order added!");
                 })
-               
+
             return data;
         }
     }

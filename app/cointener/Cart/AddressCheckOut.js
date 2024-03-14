@@ -7,7 +7,7 @@ import { useRoute } from '@react-navigation/native'
 import AppButton from '../../component/Button/AppButton'
 import { addOrderData } from '../../redux/slices/CheckOutSlice'
 import { StripeProvider } from '@stripe/stripe-react-native';
-import { addAddressData, getAddressData } from '../../redux/slices/authSlice'
+import { getAddressData } from '../../redux/slices/authSlice'
 export default function AddressCheckOut({ navigation }) {
     useEffect(()=>{
         dispatch(getAddressData())
@@ -25,24 +25,19 @@ export default function AddressCheckOut({ navigation }) {
    
     const oid = Math.floor(Math.random() * 1000000)
     const handlechackout = (data) => {
-
+        console.log(data);
         dispatch(addOrderData({
             ...data, uid: uid, pdata: pdata, total: total, orderId: oid
         }))
-        // console.log(pdata);
-
         setSelectedValue(data);
-
         setTimeout(() => {
             navigation.navigate('Payment')
         },1000);
-
     }
     return (
         <StripeProvider
             publishableKey="pk_test_51OtP3YSBROIrEDWRNFyKpUpLNazR0PcVPEHG5R1OfYKc66Q9KGjXYk8TlW9vTBvW2vTMRILWosYwx76LJmgLGTiB001rJ2T4Wp"
-            urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
-            // merchantIdentifier="merchant.com.{{YOUR_APP_NAME}}" // required for Apple Pay
+            urlScheme="your-url-scheme" 
         >
             <View>
                 <RadioButton.Group
@@ -52,14 +47,14 @@ export default function AddressCheckOut({ navigation }) {
                 </RadioButton.Group>
                 <ScrollView>
                     {
-                        authData.user.address.map((v, i) => {
+                       authData.user.address && authData.user.address.map((v, i) => {
                             return (
                                 <View style={{ width: '90%', height: 170, backgroundColor: 'white', marginLeft: 20, borderRadius: 20, borderWidth: 0.5, marginTop: 20 }} key={i}>
                                     <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                                         <RadioButton
                                             value={i}
                                             status={selectValue === i ? 'checked' : 'unchecked'}
-                                            onPress={() => handlechackout({ i, v })}
+                                            onPress={() =>handlechackout({ i, v })}
                                             color='black'
                                         />
                                         <Text style={{ fontSize: 20, color: 'black' }}>Address 1</Text>
