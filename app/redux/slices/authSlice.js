@@ -208,7 +208,6 @@ export const singEmialPass = createAsyncThunk(
         auth()
             .createUserWithEmailAndPassword(data.email, data.Password)
             .then(async (userCredential) => {
-
                 await firestore()
                     .collection('users')
                     .doc(userCredential.user.uid)
@@ -275,7 +274,6 @@ export const logingEmail = createAsyncThunk(
                 console.log('Account is Singin & Login!', user);
                 if (user.user.emailVerified) {
                     console.log('User account login!!');
-
                     await firestore()
                         .collection('users')
                         .doc(user.user.uid)

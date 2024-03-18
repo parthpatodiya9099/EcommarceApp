@@ -18,10 +18,11 @@ export default function Product({ navigation }) {
 
  
   const data = useSelector(state => state.product);
+  console.log(data.data);
   const category = useSelector(state => state.category);
 
 
-  const filterData = data.data.filter((v) => v.Discount > 10)
+  const filterData =data.data.filter((v) => v.Discount > 10)
 
   const handlechack = () => {
     category.data.map((v)=>{

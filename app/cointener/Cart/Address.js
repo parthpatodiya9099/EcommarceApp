@@ -38,29 +38,26 @@ export default function Address({ navigation }) {
     },
     validationSchema: AddAddresSchema,
     onSubmit: (values, { resetForm }) => {
-     
-        if(update){
-          console.log("user updateddddddddd");
-          dispatch(updateAddressData({address:values,oldData,uid:authdata.user.uid}))
-        }else{
-          dispatch(addAddressData({address: values, uid:authdata.user.uid}))
-        }
-      
-      // if(update){
-      //   dispatch(updateAddressData({address: values,oldData, uid: authdata.user.uid}))
-      // }else{
-      //   dispatch(addAddressData({address: values, uid: authdata.user.uid }))
-      // }
-      resetForm()
-      Setmodel(false)
-      Setupdate(false)
+       return values
     }
+    
   })
+  const handleSubmit = (values) => {
+    console.log(values);
+    if(update){
+      console.log("user updateddddddddd");
+      dispatch(updateAddressData({address:values,oldData,uid:authdata.user.uid}))
+    }else{
+      dispatch(addAddressData({address: values, uid:authdata.user.uid}))
+    }
+    Setmodel(false)
+      Setupdate(false)
+  }
   useEffect(()=>{
     dispatch(getAddressData())
   },[])
 
-  const { handleSubmit, handleBlur, handleChange, touched, errors, values,setValues } = formik
+  const {  handleBlur, handleChange, touched, errors, values,setValues } = formik
 
   const handleDelete = (data, uid) => {
     Alert.alert('Delete', 'You really want to Delete ?', [
@@ -153,7 +150,7 @@ export default function Address({ navigation }) {
             <View style={{ marginTop: verticalScale(40) }}>
               <AppButton
                 titel="SAVE-ADDRESS"
-                onPress={handleSubmit}
+                onPress={()=>handleSubmit(values)}
               />
             </View>
 

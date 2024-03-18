@@ -9,14 +9,15 @@ import { addOrderData } from '../../redux/slices/CheckOutSlice'
 import { StripeProvider } from '@stripe/stripe-react-native';
 import { getAddressData } from '../../redux/slices/authSlice'
 export default function AddressCheckOut({ navigation }) {
+    const [selectValue, setSelectedValue] = useState(null)
+    const [loder, setLoder] = useState(false)
     useEffect(() => {
         dispatch(getAddressData())
-
     }, [])
 
     const authData = useSelector(state => state.auth)
-    const [selectValue, setSelectedValue] = useState(null)
-    const [loder, setLoder] = useState(false)
+
+
     const uid = authData.user.uid
     const dispatch = useDispatch()
     const route = useRoute()
