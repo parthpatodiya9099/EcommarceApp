@@ -4,7 +4,7 @@ import { horizontalScale, verticalScale } from '../../Constant/Metrics'
 import * as yup from 'yup';
 import { useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
-import { addAddressData, deleteAddressData, getAddressData, updateAddressData } from '../../redux/slices/authSlice';
+import { addAddressData, deleteAddressData, getAddressData, getuserdata, updateAddressData } from '../../redux/slices/authSlice';
 import AddressView from '../../component/InputBox/AddressView';
 import { useEffect, useState } from 'react';
 
@@ -14,7 +14,11 @@ export default function Address({ navigation }) {
   const [oldData,SetOldData] = useState(null)
 
   const dispatch = useDispatch();
+useEffect(()=>{
+  dispatch(getuserdata())
+},[])
   const authdata = useSelector(state => state.auth)
+
   const [model, Setmodel] = useState(false)
   const handleAddAddress = () => {
     Setmodel(true)

@@ -10,6 +10,23 @@ const initialState = {
     error: null,
     user: null
 }
+
+export const getuserdata = createAsyncThunk(
+    'auth/getuserdata',
+    async () => {
+        let data
+        await firestore()
+            .collection('users')
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(documentSnapshot => {
+                    console.log(documentSnapshot);
+                    data = documentSnapshot.data()
+                })
+            })
+        return data
+    }
+)
 export const logoutuser = createAsyncThunk(
     'auth/logout',
     async () => {
@@ -211,7 +228,7 @@ export const singEmialPass = createAsyncThunk(
                 await firestore()
                     .collection('users')
                     .doc(userCredential.user.uid)
-                    .set({ name: data.username, email: data.email, emailVerified: false, createAt: new Date().toString(), updateAt: new Date().toString() })
+                    .set({ name: data.username, email: data.email, emailVerified: false, uid:userCredential.user.uid,createAt: new Date().toString(), updateAt: new Date().toString() })
                     .then(() => {
                         console.log('ok');
                     });
@@ -268,6 +285,7 @@ export const facebookauth = createAsyncThunk(
 export const logingEmail = createAsyncThunk(
     'auth/logingEmail',
     async (data) => {
+        console.log(data.uid);
         const user = await auth()
             .signInWithEmailAndPassword(data.email, data.Password)
             .then(async (user) => {
@@ -281,7 +299,7 @@ export const logingEmail = createAsyncThunk(
                         .then(() => {
                             console.log('User updated!');
                         });
-
+                        console.log(user.user,'userrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
                     return user.user
                 } else {
                     console.log('Verify Your Email!',);
@@ -316,8 +334,8 @@ const authSlice = createSlice({
         })
 
         builder.addCase(googleSingin.fulfilled, (state, action) => {
-            state.user = action.payload;
             state.isLoading = false;
+            state.user = action.payload;
             state.error = null
         })
 
@@ -353,6 +371,9 @@ const authSlice = createSlice({
         })
         builder.addCase(getAddressData.fulfilled, (state, action) => {
             state.user = action.payload;
+        })
+        builder.addCase(getuserdata.fulfilled, (state, action) => {
+            state.user = action.payload;           
         })
 
     }

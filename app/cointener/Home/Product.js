@@ -9,6 +9,8 @@ import { getSubCategoryData } from '../../redux/slices/SubCategorySlice'
 
 
 export default function Product({ navigation }) {
+  const authdata = useSelector(state => state.auth)
+  console.log(authdata.user);
   let dispatch = useDispatch()
   useEffect(() => {
     dispatch(getProductData());

@@ -185,10 +185,11 @@
 // //   },
 // // })
 
-import { Alert, Button, StyleSheet, Text, View } from 'react-native'
+import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useStripe } from '@stripe/stripe-react-native';
 import { Screen } from 'react-native-screens';
+import AppButton from '../../component/Button/AppButton';
 
 export default function Payment() {
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
@@ -205,7 +206,7 @@ export default function Payment() {
       body: JSON.stringify({ amount: amt })
     });
 
-    const { paymentIntent,ephemeralKey, customer } = await response.json();
+    const { paymentIntent, ephemeralKey, customer } = await response.json();
     console.log(paymentIntent, ephemeralKey, customer);
 
     return {
@@ -255,10 +256,9 @@ export default function Payment() {
 
   return (
     <Screen>
-      <Button
-        variant="primary"
-        title="Checkout"
+      <AppButton 
         onPress={openPaymentSheet}
+        titel={'Payment'}
       />
     </Screen>
   );

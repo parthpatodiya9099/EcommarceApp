@@ -8,9 +8,12 @@ import AppButton from '../../component/Button/AppButton'
 import { addOrderData } from '../../redux/slices/CheckOutSlice'
 import { StripeProvider } from '@stripe/stripe-react-native';
 import { getAddressData } from '../../redux/slices/authSlice'
+import Payment from './Payment'
+
 export default function AddressCheckOut({ navigation }) {
     const [selectValue, setSelectedValue] = useState(null)
     const [loder, setLoder] = useState(false)
+    const [payment, Setpayment] = useState(false)
     useEffect(() => {
         dispatch(getAddressData())
     }, [])
@@ -36,7 +39,7 @@ export default function AddressCheckOut({ navigation }) {
         setSelectedValue(data);
 
         setTimeout(() => {
-            navigation.navigate('Payment')
+            Setpayment(true)
             setLoder(false)
         }, 2000);
     }
@@ -82,25 +85,18 @@ export default function AddressCheckOut({ navigation }) {
 
                         })
                     }
-                    <View style={{ marginTop: 20 }}>
-                        <AppButton onPress={() => { navigation.navigate('Address') }}
-                            titel={'Add-Address'}
-                        />
-                    </View>
-
-
-                    <TouchableOpacity onPress={() => navigation.navigate('Payment')} style={{
-                        borderRadius: 20,
-                        width: 100,
-                        padding: 10,
-                        marginHorizontal: 10,
-                        backgroundColor: 'black',
-                        marginTop: 15,
-                        alignSelf: 'center',
-                        marginBottom: 10
-                    }}>
-                        <Text style={{ color: 'white', fontWeight: 'bold', alignSelf: 'center' }}>Next</Text>
-                    </TouchableOpacity>
+                    {
+                        payment == false ?
+                            <View style={{ marginTop: 20 }}>
+                                <AppButton onPress={() => { navigation.navigate('Address') }}
+                                    titel={'Add-Address'}
+                                />
+                            </View>
+                        :
+                            <TouchableOpacity style={{ marginTop: 20 }} >
+                                <Payment />
+                            </TouchableOpacity>
+                    }
                 </ScrollView>
 
             </View>
