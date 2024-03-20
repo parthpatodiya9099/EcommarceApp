@@ -85,18 +85,20 @@ export const UserInfo = createAsyncThunk(
 )
 export const getAddressData = createAsyncThunk(
     'auth/getaddress',
-    async () => {
+    async (userdata) => {
+        console.log(userdata);
         let data
         await firestore()
             .collection('users')
+            .doc(userdata.uid)
             .get()
-            .then(querySnapshot => {
-                querySnapshot.forEach(documentSnapshot => {
-                    console.log(documentSnapshot);
-                    data = documentSnapshot.data()
-                })
+            .then(documentSnapshot => {
+               if (documentSnapshot.exists) {
+                data = documentSnapshot.data()
+               }
             })
-        return data
+            let fdata = {...data,uid: userdata.uid}
+        return fdata
     }
 )
 export const addAddressData = createAsyncThunk(
@@ -228,7 +230,7 @@ export const singEmialPass = createAsyncThunk(
                 await firestore()
                     .collection('users')
                     .doc(userCredential.user.uid)
-                    .set({ name: data.username, email: data.email, emailVerified: false, uid:userCredential.user.uid,createAt: new Date().toString(), updateAt: new Date().toString() })
+                    .set({ name: data.username, email: data.email, emailVerified: false,createAt: new Date().toString(), updateAt: new Date().toString() })
                     .then(() => {
                         console.log('ok');
                     });

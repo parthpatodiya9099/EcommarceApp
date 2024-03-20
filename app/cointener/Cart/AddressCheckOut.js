@@ -14,12 +14,11 @@ export default function AddressCheckOut({ navigation }) {
     const [selectValue, setSelectedValue] = useState(null)
     const [loder, setLoder] = useState(false)
     const [payment, Setpayment] = useState(false)
-    useEffect(() => {
-        dispatch(getAddressData())
-    }, [])
-
+    const [orderData,SetorderData] = useState()
     const authData = useSelector(state => state.auth)
-
+    useEffect(() => {
+        dispatch(getAddressData(authData.user))
+    }, [])
 
     const uid = authData.user.uid
     const dispatch = useDispatch()
@@ -32,10 +31,11 @@ export default function AddressCheckOut({ navigation }) {
     const oid = Math.floor(Math.random() * 1000000)
     const handlechackout = (data) => {
         setLoder(true)
-        console.log(data);
-        dispatch(addOrderData({
-            ...data, uid: uid, pdata: pdata, total: total, orderId: oid
-        }))
+        // console.log(data);
+        // dispatch(addOrderData({
+        //     ...data, uid: uid, pdata: pdata, total: total, orderId: oid
+        // }))
+        SetorderData({ ...data, uid: uid, pdata: pdata, total: total, orderId: oid})
         setSelectedValue(data);
 
         setTimeout(() => {
@@ -45,7 +45,7 @@ export default function AddressCheckOut({ navigation }) {
     }
     return (
         <StripeProvider
-            publishableKey="pk_test_51OtP3YSBROIrEDWRNFyKpUpLNazR0PcVPEHG5R1OfYKc66Q9KGjXYk8TlW9vTBvW2vTMRILWosYwx76LJmgLGTiB001rJ2T4Wp"
+            publishableKey="pk_test_51OvxALSCoLYRhIn4nlb7Xa645TXdYYUzQblZEWpMP4vSodo0n3ZjHtEH0FeqXvq9RnEdY078DG0cL7gRVYfstTqk004asK8Hg9"
             urlScheme="your-url-scheme"
         >
             <View>
@@ -92,9 +92,11 @@ export default function AddressCheckOut({ navigation }) {
                                     titel={'Add-Address'}
                                 />
                             </View>
-                        :
+                            :
                             <TouchableOpacity style={{ marginTop: 20 }} >
-                                <Payment />
+                                <Payment 
+                                    data = {orderData}
+                                />
                             </TouchableOpacity>
                     }
                 </ScrollView>
@@ -104,7 +106,5 @@ export default function AddressCheckOut({ navigation }) {
     )
 }
 const style = StyleSheet.create({
-    loder: {
-
-    }
+    
 })
