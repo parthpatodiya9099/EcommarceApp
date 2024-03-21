@@ -46,9 +46,6 @@ export default function ProductDetails({ navigation }) {
     getSubCategoryData()
   }, []);
 
-
-console.log(productid);
-
   const productData = useSelector(state => state.product);
   const filterData = productData.data.filter((v) => v.id == productid);
 

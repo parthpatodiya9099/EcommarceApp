@@ -187,24 +187,28 @@
 
 import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useStripe } from '@stripe/stripe-react-native';
+import { PaymentMethod, useStripe } from '@stripe/stripe-react-native';
 import { Screen } from 'react-native-screens';
 import AppButton from '../../component/Button/AppButton';
 import { useDispatch } from 'react-redux';
 import { addOrderData } from '../../redux/slices/CheckOutSlice';
 import { useNavigation } from '@react-navigation/native';
 
+
 export default function Payment({ data }) {
-  console.log(data, 'lhgfffdd55646675654654');
+  
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch()
   const navigation = useNavigation();
+  const [customerId, setCustomerId] = useState('');
+  
+  console.log(customerId);
   const fetchPaymentSheetParams = async () => {
     let amt = data.total * 100
 
 
-    const response = await fetch(`http://192.168.1.10:4242/payment-sheet`, {
+    const response = await fetch(`http://192.168.101.177:4242/payment-sheet`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -213,7 +217,7 @@ export default function Payment({ data }) {
     });
 
     const { paymentIntent, ephemeralKey, customer } = await response.json();
-    console.log(paymentIntent, ephemeralKey, customer);
+    setCustomerId(customer)
 
     return {
       paymentIntent,
@@ -221,6 +225,7 @@ export default function Payment({ data }) {
       customer,
     };
   };
+  
 
   const initializePaymentSheet = async () => {
     const {
@@ -237,23 +242,26 @@ export default function Payment({ data }) {
       // Set `allowsDelayedPaymentMethods` to true if your business can handle payment
       //methods that complete payment after a delay, like SEPA Debit and Sofort.
       allowsDelayedPaymentMethods: true,
+     
       defaultBillingDetails: {
         name: data.v.fullname,
-      }
+      },
+      
     });
+
     if (!error) {
       setLoading(true);
     }
   };
-
+  
   const openPaymentSheet = async () => {
     const { error } = await presentPaymentSheet();
 
     if (error) {
       Alert.alert(`Error code: ${error.code}`, error.message);
     } else {
-      Alert.alert('Success', 'Your order is confirmed!');
-      dispatch(addOrderData({...data}))
+      Alert.alert('Success','Your order is confirmed!');
+      dispatch(addOrderData({data:data,customerId:customerId}))
       navigation.navigate('Success')
     }
   };

@@ -32,7 +32,10 @@ export const getOrderData = createAsyncThunk(
 )
 export const addOrderData = createAsyncThunk(
     'order/addOrder',
-    async (data) => {
+    async ({data,customerId},{getState}) => {
+        const currentState = getState();
+        console.log('Current state:', currentState);
+
         const documentSnapshot = await firestore()
             .collection('order')
             .doc(data.uid)
@@ -49,13 +52,14 @@ export const addOrderData = createAsyncThunk(
                         totalAmount: data.total,
                         states: 'panding',
                         orderDate: new Date().toLocaleDateString(),
-                        orderId: data.orderId
+                        orderId: data.orderId,
+                        customerId:customerId
                     })
                 })
                 .then(() => {
-                    console.log("Order successfully Deleted!");
+                    console.log("Order successfully added!");
                 })
-            return { ...data }
+            return { ...data,...customerId }
         } else {
             await firestore()
                 .collection('order')
@@ -69,15 +73,15 @@ export const addOrderData = createAsyncThunk(
                             totalAmount: data.total,
                             states: 'panding',
                             orderDate: new Date().toLocaleDateString(),
-                            orderId: data.orderId
+                            orderId: data.orderId,
+                            customerId:customerId
                         }
                     ]
                 })
                 .then(() => {
                     console.log("New Order added!");
                 })
-
-            return data;
+            return {...data,...customerId};
         }
     }
 
