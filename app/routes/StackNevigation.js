@@ -23,7 +23,7 @@ import Login2 from '../cointener/Task/Login2';
 import Login22 from '../cointener/Task/Login22';
 import AddressCheckOut from '../cointener/Cart/AddressCheckOut';
 import OrderDetails from '../cointener/Profile/OrderDetails';
-import Setting from '../cointener/Profile/Setting';
+
 
 
 

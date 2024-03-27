@@ -17,8 +17,8 @@ export default function MyOrder({ navigation }) {
   let arr = []
   let qty
   orderData.order && orderData.order.map((v) => {
-    v.order.map((v1) => {
-      v1.items.map((v2) => {
+    v.order?.map((v1) => {
+      v1.items?.map((v2) => {
         arr.push(v2.qty)
         qty = arr.reduce((acc, a) => acc + a, 0)
       })
@@ -44,10 +44,10 @@ export default function MyOrder({ navigation }) {
 
         {
           orderData.order && orderData.order.map((v) => {
-            return v.order.map((v1,i) => {
+            return v.order && v.order.map((v1, i) => {
               return (
                 <Orderinput
-                key={i}
+                  key={i}
                   ordernumber={v1.orderId}
                   date={v1.orderDate}
                   Amount={v1.totalAmount}

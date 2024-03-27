@@ -6,8 +6,6 @@ import { persistor, store } from './app/redux/Store';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-
-
 export default function App() {
 
 
